@@ -1,6 +1,9 @@
 package io.github.gitars.birthdayreminder
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.gitars.birthdayreminder.databinding.ActivityMainBinding
 import io.github.gitars.birthdayreminder.databinding.ViewFriendsBirthdayListItemBinding
+import java.util.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        createNotificationChannel()
 
         val person = Person("afifa", 99)
         person.getData()
@@ -86,17 +92,44 @@ class MainActivity : AppCompatActivity() {
             holder.binding.birthday.text = birthday
             holder.binding.root.setOnClickListener {
                 Log.e("afifa","hellomyself")
-                var builder = NotificationCompat.Builder(it.context, "general")
+                var builder = NotificationCompat.Builder(it.context, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                         .setContentTitle("Birthday Reminder $friendName")
                         .setContentText("Birthday Reminder Time $birthday")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 with(NotificationManagerCompat.from(it.context)) {
                     // notificationId is a unique int for each notification that you must define
-                    notify(48, builder.build())
+                    notify(Random.nextInt(), builder.build())
                 }
             }
         }
 
         override fun getItemCount() = friends.size
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager: NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            if (notificationManager.getNotificationChannel(CHANNEL_ID) != null) {
+                return
+            }
+
+            val name = "Reminders"
+            val descriptionText = "Birthday reminders"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    companion object {
+        private const val CHANNEL_ID = "0"
     }
 }
