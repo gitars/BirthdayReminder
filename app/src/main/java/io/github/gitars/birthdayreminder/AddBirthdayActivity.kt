@@ -27,7 +27,7 @@ class AddBirthdayActivity : AppCompatActivity() {
             val name = binding.friendsName.text
             val birthday = binding.birthday.text
             if (name.isNullOrBlank() || birthday.isNullOrBlank()) {
-                Toast.makeText(this, "Fill out all the fields!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Fill out all the fields on line 30!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val prefs = getSharedPreferences("birthdays", Context. MODE_PRIVATE)

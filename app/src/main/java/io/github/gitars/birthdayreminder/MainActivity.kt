@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     class Superhero(name: String, age: Int, val power: String): Person(name, age) {
-        override fun getData() = "Super is really cool and also named $name"
+        override fun getData() = "Super is really cool and powerful and also named $name"
     }
 
 
