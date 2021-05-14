@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.gitars.birthdayreminder.databinding.ActivityMainBinding
@@ -82,6 +84,17 @@ class MainActivity : AppCompatActivity() {
             val (friendName, birthday) = friends[position]
             holder.binding.friendsName.text = friendName
             holder.binding.birthday.text = birthday
+            holder.binding.root.setOnClickListener {
+                Log.e("afifa","hellomyself")
+                var builder = NotificationCompat.Builder(it.context, "general")
+                        .setContentTitle("Birthday Reminder $friendName")
+                        .setContentText("Birthday Reminder Time $birthday")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                with(NotificationManagerCompat.from(it.context)) {
+                    // notificationId is a unique int for each notification that you must define
+                    notify(48, builder.build())
+                }
+            }
         }
 
         override fun getItemCount() = friends.size
