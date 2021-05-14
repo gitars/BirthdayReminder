@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.addBirthday.setOnClickListener {
             Log.e("XXX", "we just clicked the button")
-            Toast.makeText(this, "clicked the button!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "clicked the button! with update!", Toast.LENGTH_SHORT).show()
             startActivity(AddBirthdayActivity.newIntent(this))
         }
 
